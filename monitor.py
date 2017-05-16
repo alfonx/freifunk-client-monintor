@@ -52,7 +52,12 @@ if __name__ == '__main__':
         
     
     print 'Verbinde mit ' + SSID + '.. '
-    connectwlan_output = check_output(['iwconfig', 'wlan0','essid', SSID])
+    #connectwlan_output = check_output(['iwconfig', 'wlan0','essid', SSID])
+
+    #networkID = check_output(["wpa_cli", "add_network"])
+    #call(["wpa_cli", "set_network", networkID, "ssid", "\'\"" + SSID + "\"\'"])
+    #call(["wpa_cli", "set_network", networkID, "scan_ssid", "1"])
+    #call(["wpa_cli", "enable_network", networkID])
     
     starttime = time.time()
     connectwlan_output = check_output(['dhclient', 'wlan0'])
