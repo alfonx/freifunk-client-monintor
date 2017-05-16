@@ -4,8 +4,8 @@ from subprocess import check_output
 import re
 from datetime import date
 from datetime import datetime
-import time
 
+import time
 from time import sleep
 
 # Networkmanager muss aus
@@ -23,27 +23,33 @@ def writeCSVLine(logstring):
 if __name__ == '__main__':
         # TODO wait
     logstring = str(datetime.now()) + ';'
+    logstring += SSID + ';'
     
     
     call(["ip","addr","flush","dev","wlan0"])
+    call(["ip","-6","addr","flush","dev","wlan0"])
 
     call(["rfkill", "block", "wlan"])
     
     sleep(5)
     
     call(["rfkill", "unblock", "wlan"])
+
+    sleep(2)
+
+    call(["ifup", "wlan0"])
     
     scanres = check_output(['iwlist', 'wlan0', 'scan'])
     m = re.search(SSID, scanres)
     #print scanres
-    if not m:
-        logstring = logstring + 'FF SSID ist nicht sichtbar;';
+    if m:
+        logstring += SSID + ' ist sichtbar;'
+        print 'SSID ' + SSID + ' ist sichtbar;'
+    else:
+        logstring = logstring + 'SSID ist nicht sichtbar;';
         writeCSVLine(logstring)
         exit
         
-    logstring = logstring + 'FF SSID ist sichtbar;'
-    print 'SSID ' + SSID + ' ist sichtbar;'
-    print logstring
     
     print 'Verbinde mit ' + SSID + '.. '
     connectwlan_output = check_output(['iwconfig', 'wlan0','essid', SSID])
@@ -53,7 +59,7 @@ if __name__ == '__main__':
     dhcpduration = time.time()-starttime
     logstring += str(dhcpduration)+';'
 
-    print "sleep 20s nach dhclient weil IP6 laenger dauern kann..."    
+    print "sleep 20s nach dhclient weil IPv6 laenger dauern kann..."    
     sleep(20)
     
     
@@ -72,7 +78,5 @@ if __name__ == '__main__':
         logstring += ';'
         
     print logstring
-    writeCSVLine(logstring)
-    
-    #call(["rfkill", "block", "wlan"])
+    writeCSVLine(logstring + '\n')
     
