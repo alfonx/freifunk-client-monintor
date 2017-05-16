@@ -25,19 +25,28 @@ if __name__ == '__main__':
     logstring = str(datetime.now()) + ';'
     logstring += SSID + ';'
     
+    print "flusching...."
     
     call(["ip","addr","flush","dev","wlan0"])
     call(["ip","-6","addr","flush","dev","wlan0"])
+
+    print "block wlan..."
 
     call(["rfkill", "block", "wlan"])
     
     sleep(5)
     
+    print "unblock wlan..."
+
     call(["rfkill", "unblock", "wlan"])
 
-    sleep(2)
+    sleep(5)
+    
+    print "ifconfig wlan0 up..."
 
-    call(["ifup", "wlan0"])
+    call(["ifconfig", "wlan0", "up"])
+    
+    sleep(5)
     
     scanres = check_output(['iwlist', 'wlan0', 'scan'])
     m = re.search(SSID, scanres)
