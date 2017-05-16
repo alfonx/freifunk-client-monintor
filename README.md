@@ -1,5 +1,9 @@
 # freifunk client monitor
 
+Eintrag in 'crontab -e' könnte so aussehen:
+*/15 * * * * flock -n /var/lock/freifunkmonitor /root/monitor.sh
+
+
 ```
 ip addr flush dev wlan0
 rfkill block wlan
