@@ -15,7 +15,7 @@ SSID = "Freifunk"
 
 def writeCSVLine(logstring):
     text_file = open(SSID + ".log", "a")
-    text_file.write(logstring)    
+    text_file.write(logstring + '\n')    
     text_file.close()
     pass
 
@@ -92,5 +92,5 @@ if __name__ == '__main__':
         logstring += ';'
         
     print logstring
-    writeCSVLine(logstring + '\n')
+    writeCSVLine(logstring)
     
